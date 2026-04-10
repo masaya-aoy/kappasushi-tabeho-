@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -57,7 +58,7 @@
 </div>
 
 <script>
-    // ⭐️【重要】ここにGASでデプロイしたウェブアプリのURLを貼り付けてください！
+    // ⭐️ いただいたURLをセット済みです
     const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxBt63cNk3rc3RzrdCmUlGheKY47O4k3B9hNl5zgrJJ4DeYTJMf0S1iWXK7FQbxkdVZVg/exec"; 
 
     const TARGET_PRICE = 2990; 
@@ -77,8 +78,9 @@
     // --- 1. インターネット(fetch)経由でのデータ読み込み ---
     document.addEventListener('DOMContentLoaded', () => {
         
-        if (GAS_API_URL === "https://script.google.com/macros/s/AKfycbxBt63cNk3rc3RzrdCmUlGheKY47O4k3B9hNl5zgrJJ4DeYTJMf0S1iWXK7FQbxkdVZVg/exec" || GAS_API_URL === "") {
-            showErrorHTML("⚠️ URLが未設定です", "<code>index2.html</code> のコード内にある <code>GAS_API_URL</code> に、GASで発行したURLを貼り付けてからGitHubにアップロードしてください。");
+        // ⭐️ 修正：URLが「http」から始まっていない場合のみ未設定エラーにする（誤作動防止）
+        if (!GAS_API_URL.startsWith("http")) {
+            showErrorHTML("⚠️ URLが未設定です", "<code>index.html</code> のコード内にある <code>GAS_API_URL</code> に、GASで発行したURLを貼り付けてからGitHubにアップロードしてください。");
             return;
         }
 
@@ -89,7 +91,7 @@
             showErrorHTML("⚠️ 通信エラー（タイムアウト）", "10秒待機しましたがGASから応答がありません。<br>GAS側の設定（アクセス権限が「全員」になっているか等）を確認してください。");
         }, 10000);
 
-        // ⭐️ fetchを使ってGASにデータを注文する
+        // fetchを使ってGASにデータを注文する
         fetch(GAS_API_URL, { 
             method: 'GET', // データをもらうだけなのでGET
             signal: controller.signal 
